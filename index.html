@@ -1,1 +1,104 @@
-<!DOCTYPE html><html lang="bn"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>NovaMart BD - Reseller</title><script src="https://telegram.org/js/telegram-web-app.js"></script><style>*{box-sizing:border-box}body{font-family:Hind Siliguri,sans-serif;margin:0;background:#f5f7fb}header{background:#111827;color:#fff;padding:16px 20px;display:flex;justify-content:space-between;align-items:center;position:sticky;top:0}header h1{margin:0;font-size:22px}header h1 span{color:#3b82f6}#adminBtn{background:#3b82f6;color:#fff;border:0;padding:8px 14px;border-radius:8px}.products{display:grid;grid-template-columns:repeat(auto-fill,minmax(160px,1fr));gap:14px;padding:16px}.card{background:#fff;border-radius:14px;overflow:hidden;box-shadow:0 4px 12px rgba(0,0,0,.06);display:flex;flex-direction:column}.card img{width:100%;height:160px;object-fit:cover}.card-body{padding:10px;flex:1;display:flex;flex-direction:column}.card-body h3{margin:0 0 6px;font-size:15px}.price{color:#16a34a;font-weight:700;margin-bottom:8px}.card-body button{background:#111827;color:#fff;border:0;padding:8px;border-radius:8px}#cartBar{position:fixed;bottom:0;left:0;right:0;background:#111827;color:#fff;padding:12px 16px;display:none;justify-content:space-between;align-items:center}#cartBar button{background:#3b82f6;border:0;color:#fff;padding:8px 16px;border-radius:8px}#adminModal{position:fixed;inset:0;background:rgba(0,0,0,.6);display:none;align-items:center;justify-content:center;z-index:30;padding:16px}.modalBox{background:#fff;width:100%;max-width:500px;border-radius:16px;padding:20px;max-height:90vh;overflow:auto}.modalBox input,.modalBox textarea{width:100%;padding:10px;margin:6px 0 12px;border:1px solid #ddd;border-radius:8px}.modalBox button{width:100%;padding:10px;background:#111827;color:#fff;border:0;border-radius:8px;margin-top:6px}.close{float:right;cursor:pointer;font-size:20px}</style></head><body><header><h1><span>Nova</span>Mart BD</h1><button id="adminBtn" onclick="openLogin()">Admin</button></header><div class="products" id="productGrid"></div><div id="cartBar"><span id="cartInfo">0</span><button onclick="checkout()">Order</button></div><div id="adminModal"><div class="modalBox" id="modalContent"></div></div><script>const ADMIN_PASS="NovaMart2534";let products=JSON.parse(localStorage.getItem('nova_products')||'null')||[{name:"Sneakers",price:1250,img:"https://images.unsplash.com/photo-1542291026-7eec264c27ff?w=400",desc:"Premium"},{name:"Headphone",price:850,img:"https://images.unsplash.com/photo-1505740420928-5e560c06d30e?w=400",desc:"Best"},{name:"Watch",price:1650,img:"https://images.unsplash.com/photo-1523275335684-37898b6baf30?w=400",desc:"Stylish"}];let cart=[],isAdmin=false;function saveProducts(){localStorage.setItem('nova_products',JSON.stringify(products))}function render(){let g=document.getElementById('productGrid');g.innerHTML="";products.forEach((p,i)=>{g.innerHTML+=`<div class="card"><img src="${p.img}"><div class="card-body"><h3>${p.name}</h3><div class="price">৳ ${p.price}</div><button onclick="addToCart(${i})">Add to Cart</button>${isAdmin?`<button onclick="deleteProduct(${i})" style="background:#ef4444;margin-top:6px">Delete</button>`:''}</div></div>`})}function addToCart(i){cart.push(products[i]);updateCart()}function updateCart(){let b=document.getElementById('cartBar');if(cart.length>0){b.style.display='flex';document.getElementById('cartInfo').innerText=cart.length+" pcs - ৳ "+cart.reduce((s,p)=>s+p.price
+<!DOCTYPE html>
+<html lang="bn">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>NovaMart BD - Best Online Shop</title>
+<style>
+*{margin:0;padding:0;box-sizing:border-box;font-family:system-ui}
+body{background:#f6f7fb}
+.header{background:#0f172a;color:#fff;padding:14px 18px;display:flex;justify-content:space-between;align-items:center;position:sticky;top:0;z-index:10}
+.logo{font-size:22px;font-weight:800}.logo span{color:#60a5fa}
+.btn{background:#3b82f6;color:#fff;border:none;padding:8px 16px;border-radius:20px;font-weight:600;cursor:pointer}
+.hero{padding:18px;text-align:center;background:linear-gradient(135deg,#0f172a,#1e3a8a);color:#fff}
+.container{padding:14px;max-width:1100px;margin:auto}
+.grid{display:grid;grid-template-columns:repeat(2,1fr);gap:12px}
+@media(min-width:768px){.grid{grid-template-columns:repeat(4,1fr)}}
+.card{background:#fff;border-radius:14px;overflow:hidden;box-shadow:0 2px 8px rgba(0,0,0,.06);display:flex;flex-direction:column}
+.card img{width:100%;height:140px;object-fit:cover;background:#eee}
+.card-body{padding:10px;flex:1}
+.price{color:#2563eb;font-weight:800;margin:4px 0}
+.card button{width:100%;padding:8px;border:none;background:#0f172a;color:#fff;border-radius:8px;cursor:pointer}
+.cart{position:fixed;right:10px;bottom:10px;background:#0f172a;color:#fff;padding:14px;border-radius:14px;width:300px;max-height:80vh;overflow:auto;display:none;z-index:20}
+.admin-panel{background:#fff;margin:14px;padding:14px;border-radius:12px;display:none}
+input,textarea{width:100%;padding:8px;margin:6px 0;border:1px solid #ddd;border-radius:8px}
+</style>
+</head>
+<body>
+<div class="header">
+<div class="logo"><span>Nova</span>Mart BD</div>
+<div style="display:flex;gap:8px">
+<button class="btn" onclick="toggleCart()">🛒 <span id="cartCount">0</span></button>
+<button class="btn" onclick="toggleAdmin()">Admin</button>
+</div>
+</div>
+<div class="hero">
+<h2>🇧🇩 বাংলাদেশের সেরা অনলাইন শপ</h2>
+<p>কম দামে ভালো প্রোডাক্ট, হোম ডেলিভারি!</p>
+</div>
+<div class="container">
+<div class="admin-panel" id="adminPanel">
+<h3>Admin Panel</h3>
+<input id="pName" placeholder="প্রোডাক্ট নাম">
+<input id="pPrice" type="number" placeholder="দাম - 500">
+<input id="pImg" placeholder="ছবির লিংক">
+<textarea id="pDesc" placeholder="বিবরণ"></textarea>
+<button class="btn" style="width:100%" onclick="addProduct()">প্রোডাক্ট যোগ করুন +</button>
+<div id="adminList" style="margin-top:10px"></div>
+<button class="btn" style="background:#ef4444;margin-top:8px" onclick="toggleAdmin()">বন্ধ করুন</button>
+</div>
+<div class="grid" id="productGrid"></div>
+</div>
+<div class="cart" id="cartBox">
+<h3>আপনার কার্ট</h3>
+<div id="cartItems"></div>
+<h4 style="margin-top:10px">মোট: ৳<span id="total">0</span></h4>
+<button class="btn" style="width:100%;margin-top:8px;background:#22c55e" onclick="orderNow()">WhatsApp এ অর্ডার করুন</button>
+<button class="btn" style="width:100%;margin-top:6px;background:#64748b" onclick="toggleCart()">বন্ধ</button>
+</div>
+<script>
+let products=JSON.parse(localStorage.getItem('nova_products'))||[
+{name:"Wireless Earbuds TWS",price:850,img:"https://images.unsplash.com/photo-1590658268037-6bf12165a8df?w=400",desc:"Best quality sound"},
+{name:"Smart Watch Y20",price:1250,img:"https://images.unsplash.com/photo-1523275335684-37898b6baf30?w=400",desc:"Waterproof"},
+{name:"Men's T-Shirt",price:350,img:"https://images.unsplash.com/photo-1521572163474-6864f9cf17ab?w=400",desc:"Cotton premium"},
+{name:"Ladies Hand Bag",price:950,img:"https://images.unsplash.com/photo-1584917865442-de89df76afd3?w=400",desc:"Stylish bag"},
+{name:"Sunglasses",price:450,img:"https://images.unsplash.com/photo-1572635196237-14b3f281503f?w=400",desc:"UV protection"},
+{name:"Bluetooth Speaker",price:1100,img:"https://images.unsplash.com/photo-1608043152269-423dbba4e7e4?w=400",desc:"Loud bass"},
+{name:"Running Shoes",price:1450,img:"https://images.unsplash.com/photo-1542291026-7eec264c27ff?w=400",desc:"Comfortable"},
+{name:"Backpack",price:750,img:"https://images.unsplash.com/photo-1553062407-98eeb64c6a62?w=400",desc:"School/College"}
+];
+let cart=[];
+function save(){localStorage.setItem('nova_products',JSON.stringify(products))}
+function render(){
+const grid=document.getElementById('productGrid');
+grid.innerHTML=products.map((p,i)=>`<div class="card"><img src="${p.img}" onerror="this.src='https://via.placeholder.com/300'"><div class="card-body"><h4>${p.name}</h4><p style="font-size:12px;color:#64748b">${p.desc||''}</p><div class="price">৳ ${p.price}</div><button onclick="addToCart(${i})">কার্টে যোগ করুন</button></div></div>`).join('');
+renderAdminList();
+}
+function renderAdminList(){document.getElementById('adminList').innerHTML=products.map((p,i)=>`<div style="display:flex;justify-content:space-between;background:#f1f5f9;padding:6px;border-radius:6px;margin-top:4px"><span>${p.name} - ৳${p.price}</span><span style="color:red;cursor:pointer" onclick="delProd(${i})">❌</span></div>`).join('');}
+function addProduct(){
+const name=document.getElementById('pName').value;
+const price=document.getElementById('pPrice').value;
+const img=document.getElementById('pImg').value||'https://via.placeholder.com/300';
+const desc=document.getElementById('pDesc').value;
+if(!name||!price)return alert('নাম ও দাম দিন');
+products.unshift({name,price:Number(price),img,desc});
+save();render();
+document.getElementById('pName').value='';document.getElementById('pPrice').value='';document.getElementById('pImg').value='';document.getElementById('pDesc').value='';
+alert('প্রোডাক্ট যোগ হয়েছে!');
+}
+function delProd(i){if(confirm('ডিলিট করবেন?')){products.splice(i,1);save();render();}}
+function addToCart(i){cart.push(products[i]);updateCart();toggleCart(true);}
+function updateCart(){
+document.getElementById('cartCount').innerText=cart.length;
+let total=0;
+document.getElementById('cartItems').innerHTML=cart.map((p,idx)=>{total+=p.price;return `<div style="display:flex;justify-content:space-between;margin:4px 0"><span>${p.name}</span><span>৳${p.price} <span onclick="removeCart(${idx})" style="color:red;cursor:pointer">x</span></span></div>`}).join('')||'কার্ট খালি';
+document.getElementById('total').innerText=total;
+}
+function removeCart(i){cart.splice(i,1);updateCart();}
+function toggleCart(force){const box=document.getElementById('cartBox');box.style.display=force===true?'block':(box.style.display==='block'?'none':'block');}
+function toggleAdmin(){const p=document.getElementById('adminPanel');p.style.display=p.style.display==='block'?'none':'block';if(p.style.display==='block'){let pass=prompt('Admin পাসওয়ার্ড দিন (1234)');if(pass!=='1234'){alert('ভুল পাসওয়ার্ড');p.style.display='none';}}}
+function orderNow(){if(cart.length===0)return alert('কার্ট খালি!');let msg='আসসালামু আলাইকুম, আমি NovaMart BD থেকে অর্ডার করতে চাই:%0A';let total=0;cart.forEach(p=>{msg+=`- ${p.name} ৳${p.price}%0A`;total+=p.price});msg+=`%0Aমোট: ৳${total}%0A%0Aআমার ঠিকানা: `;window.open(`https://wa.me/8801XXXXXXXXX?text=${msg}`,'_blank');}
+render();updateCart();
+</script>
+</body>
+                                    </html>
