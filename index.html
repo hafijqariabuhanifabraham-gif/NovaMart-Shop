@@ -1,38 +1,24 @@
+
 <!DOCTYPE html>
 <html lang="bn">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>NovaMart Reseller BD</title>
+<title>NovaMart - Reseller BD</title>
 <script src="https://telegram.org/js/telegram-web-app.js"></script>
+<link href="https://fonts.googleapis.com/css2?family=Hind+Siliguri:wght@400;600;700&display=swap" rel="stylesheet">
 <style>
-body{font-family:sans-serif;margin:0;background:#f7f7fb}
-.header{background:#000;color:#fff;padding:16px;text-align:center;font-weight:bold;font-size:20px}
-.container{padding:16px}
-.card{background:#fff;border-radius:16px;padding:12px;margin-bottom:12px;display:flex;gap:12px;box-shadow:0 2px 8px rgba(0,0,0,0.06)}
-.card img{width:80px;height:80px;border-radius:12px}
-.btn{background:#000;color:#fff;border:none;padding:10px 16px;border-radius:10px;width:100%;margin-top:6px;font-weight:bold}
-</style>
-</head>
-<body>
-<div class="header">NovaMart Reseller BD</div>
-<div class="container">
-<p>আসসালামু আলাইকুম! প্রোডাক্ট বেছে রিসেল করুন:</p>
-<div id="list"></div>
-</div>
-<script>
-const tg=Telegram.WebApp; tg.expand(); tg.ready();
-const products=[
-{name:"Premium T-Shirt",price:650,profit:150,img:"https://via.placeholder.com/300?text=T-Shirt"},
-{name:"Sneakers",price:1250,profit:250,img:"https://via.placeholder.com/300?text=Shoes"},
-{name:"Smart Watch",price:1800,profit:400,img:"https://via.placeholder.com/300?text=Watch"}
-];
-const list=document.getElementById('list');
-products.forEach(p=>{
-const d=document.createElement('div');d.className='card';
-d.innerHTML=`<img src="${p.img}"><div style="flex:1"><b>${p.name}</b><br>দাম ${p.price}৳ | লাভ ${p.profit}৳<br><button class="btn" onclick="Telegram.WebApp.showAlert('অর্ডার রিসিভ হয়েছে ভাই!')">অর্ডার করুন</button></div>`;
-list.appendChild(d);
-});
-</script>
-</body>
-  </html>
+*{box-sizing:border-box}body{font-family:'Hind Siliguri',sans-serif;margin:0;background:#f5f7fb}
+header{background:#111827;color:#fff;padding:16px 20px;display:flex;justify-content:space-between;align-items:center;position:sticky;top:0;z-index:10}
+header h1{margin:0;font-size:22px}header h1 span{color:#3b82f6}
+#adminBtn{background:#3b82f6;color:#fff;border:0;padding:8px 14px;border-radius:8px;cursor:pointer}
+.products{display:grid;grid-template-columns:repeat(auto-fill,minmax(160px,1fr));gap:14px;padding:16px}
+.card{background:#fff;border-radius:14px;overflow:hidden;box-shadow:0 4px 12px rgba(0,0,0,.06);display:flex;flex-direction:column}
+.card img{width:100%;height:160px;object-fit:cover}
+.card-body{padding:10px;flex:1;display:flex;flex-direction:column}
+.card-body h3{margin:0 0 6px;font-size:15px}
+.price{color:#16a34a;font-weight:700;margin-bottom:8px}
+.card-body button{background:#111827;color:#fff;border:0;padding:8px;border-radius:8px;cursor:pointer}
+#cartBar{position:fixed;bottom:0;left:0;right:0;background:#111827;color:#fff;padding:12px 16px;display:none;justify-content:space-between;align-items:center;z-index:20}
+#cartBar button{background:#3b82f6;border:0;color:#fff;padding:8px 16px;border-radius:8px}
+#adminModal{position
