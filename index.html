@@ -38,7 +38,7 @@ input,textarea{width:100%;padding:8px;margin:6px 0;border:1px solid #ddd;border-
 </div>
 <div class="container">
 <div class="admin-panel" id="adminPanel">
-<h3>Admin Panel - NovaMart BD (Secret)</h3>
+<h3>Admin Panel - NovaMart BD</h3>
 <input id="pName" placeholder="প্রোডাক্ট নাম">
 <input id="pPrice" type="number" placeholder="দাম - 500">
 <input id="pImg" placeholder="ছবির লিংক">
@@ -71,46 +71,4 @@ let cart=[];
 function save(){localStorage.setItem('nova_products',JSON.stringify(products))}
 function render(){
 const grid=document.getElementById('productGrid');
-grid.innerHTML=products.map((p,i)=>`<div class="card"><img src="${p.img}" onerror="this.src='https://via.placeholder.com/300'"><div class="card-body"><h4>${p.name}</h4><p style="font-size:12px;color:#64748b">${p.desc||''}</p><div class="price">৳ ${p.price}</div><button onclick="addToCart(${i})">কার্টে যোগ করুন</button></div></div>`).join('');
-renderAdminList();
-}
-function renderAdminList(){document.getElementById('adminList').innerHTML=products.map((p,i)=>`<div style="display:flex;justify-content:space-between;background:#f1f5f9;padding:6px;border-radius:6px;margin-top:4px"><span>${p.name} - ৳${p.price}</span><span style="color:red;cursor:pointer" onclick="delProd(${i})">❌</span></div>`).join('');}
-function addProduct(){
-const name=document.getElementById('pName').value;
-const price=document.getElementById('pPrice').value;
-const img=document.getElementById('pImg').value||'https://via.placeholder.com/300';
-const desc=document.getElementById('pDesc').value;
-if(!name||!price)return alert('নাম ও দাম দিন');
-products.unshift({name,price:Number(price),img,desc});
-save();render();
-document.getElementById('pName').value='';document.getElementById('pPrice').value='';document.getElementById('pImg').value='';document.getElementById('pDesc').value='';
-alert('প্রোডাক্ট যোগ হয়েছে!');
-}
-function delProd(i){if(confirm('ডিলিট করবেন?')){products.splice(i,1);save();render();}}
-function addToCart(i){cart.push(products[i]);updateCart();toggleCart(true);}
-function updateCart(){
-document.getElementById('cartCount').innerText=cart.length;
-let total=0;
-document.getElementById('cartItems').innerHTML=cart.map((p,idx)=>{total+=p.price;return `<div style="display:flex;justify-content:space-between;margin:4px 0"><span>${p.name}</span><span>৳${p.price} <span onclick="removeCart(${idx})" style="color:red;cursor:pointer">x</span></span></div>`}).join('')||'কার্ট খালি';
-document.getElementById('total').innerText=total;
-}
-function removeCart(i){cart.splice(i,1);updateCart();}
-function toggleCart(force){const box=document.getElementById('cartBox');box.style.display=force===true?'block':(box.style.display==='block'?'none':'block');}
-function toggleAdmin(){
-const p=document.getElementById('adminPanel');
-if(p.style.display==='block'){p.style.display='none';return;}
-let pass=prompt('Admin পাসওয়ার্ড দিন');
-if(pass!=='NovaMart2534'){alert('ভুল পাসওয়ার্ড!');return;}
-p.style.display='block';
-}
-function orderNow(){if(cart.length===0)return alert('কার্ট খালি!');let msg='আসসালামু আলাইকুম, আমি NovaMart BD থেকে অর্ডার করতে চাই:%0A';let total=0;cart.forEach(p=>{msg+=`- ${p.name} ৳${p.price}%0A`;total+=p.price});msg+=`%0Aমোট: ৳${total}%0A%0Aআমার ঠিকানা: `;window.open(`https://wa.me/8801XXXXXXXXX?text=${msg}`,'_blank');}
-// SECRET ADMIN CHECK
-const params=new URLSearchParams(window.location.search);
-if(params.has('admin')){
-document.getElementById('adminBtn').style.display='block';
-toggleAdmin();
-}
-render();updateCart();
-</script>
-</body>
-  </html>
+grid.innerHTML=products.map((p,i
