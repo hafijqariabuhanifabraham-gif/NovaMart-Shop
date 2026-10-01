@@ -8,7 +8,7 @@
 *{margin:0;padding:0;box-sizing:border-box;font-family:system-ui}
 body{background:#f6f7fb}
 .header{background:#0f172a;color:#fff;padding:14px 18px;display:flex;justify-content:space-between;align-items:center;position:sticky;top:0;z-index:10}
-.logo{font-size:22px;font-weight:800}.logo span{color:#60a5fa}
+.logo{font-size:22px;font-weight:800;cursor:pointer;user-select:none}.logo span{color:#60a5fa}
 .btn{background:#3b82f6;color:#fff;border:none;padding:8px 16px;border-radius:20px;font-weight:600;cursor:pointer}
 .hero{padding:18px;text-align:center;background:linear-gradient(135deg,#0f172a,#1e3a8a);color:#fff}
 .container{padding:14px;max-width:1100px;margin:auto}
@@ -26,7 +26,7 @@ input,textarea{width:100%;padding:8px;margin:6px 0;border:1px solid #ddd;border-
 </head>
 <body>
 <div class="header">
-<div class="logo"><span>Nova</span>Mart BD</div>
+<div class="logo" id="logoBtn"><span>Nova</span>Mart BD</div>
 <div style="display:flex;gap:8px">
 <button class="btn" onclick="toggleCart()">🛒 <span id="cartCount">0</span></button>
 <button class="btn" id="adminBtn" style="display:none" onclick="toggleAdmin()">Admin</button>
@@ -102,7 +102,17 @@ if(p.style.display==='block'){p.style.display='none';return;}
 let pass=prompt('Admin পাসওয়ার্ড দিন');
 if(pass!=='NovaMart2534'){alert('ভুল পাসওয়ার্ড!');return;}
 p.style.display='block';
+document.getElementById('adminBtn').style.display='block';
 }
+// লোগোতে ৩ বার টাচ করলে Admin খুলবে
+let logoClicks=0;
+let logoTimer=null;
+document.getElementById('logoBtn').addEventListener('click',()=>{
+logoClicks++;
+if(logoTimer) clearTimeout(logoTimer);
+logoTimer=setTimeout(()=>{logoClicks=0},1500);
+if(logoClicks>=3){logoClicks=0;toggleAdmin();}
+});
 function orderNow(){if(cart.length===0)return alert('কার্ট খালি!');let msg='আসসালামু আলাইকুম, আমি NovaMart BD থেকে অর্ডার করতে চাই:%0A';let total=0;cart.forEach(p=>{msg+=`- ${p.name} ৳${p.price}%0A`;total+=p.price});msg+=`%0Aমোট: ৳${total}%0A%0Aআমার ঠিকানা: `;window.open(`https://wa.me/8801352213730?text=${msg}`,'_blank');}
 const params=new URLSearchParams(window.location.search);
 if(params.has('admin')){
